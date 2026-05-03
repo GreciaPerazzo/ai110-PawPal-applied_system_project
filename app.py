@@ -1,6 +1,7 @@
 import streamlit as st
 from pawpal_system import Owner, Pet, Task, Scheduler
 from datetime import date, time, timedelta
+from ai_planner import generate_care_plan
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="wide")
 
@@ -179,3 +180,39 @@ if todays_tasks:
         st.metric("Pending", len(todays_tasks) - completed_count)
 else:
     st.info("📋 No tasks scheduled for today. Add some tasks above!")
+
+# AI Care Plan Section
+st.divider()
+st.header("🤖 AI Care Plan")
+st.caption("Powered by Google Gemini")
+
+# Store AI plan in session state so it doesn't disappear
+if "ai_plan" not in st.session_state:
+    st.session_state.ai_plan = None
+
+if owner.get_pets():
+    selected_ai_pet = st.selectbox(
+        "Select a pet to generate a care plan for:",
+        [pet.name for pet in owner.get_pets()],
+        key="ai_pet_select"
+    )
+    if st.button("✨ Generate AI Care Plan", key="ai_plan_btn"):
+        pet_obj = next((p for p in owner.get_pets() if p.name == selected_ai_pet), None)
+        if pet_obj:
+            pending_tasks = pet_obj.get_pending_tasks()
+            with st.spinner("🐾 Generating your personalized care plan..."):
+                plan = generate_care_plan(
+                    pet_name=pet_obj.name,
+                    pet_species=pet_obj.species,
+                    pet_breed=pet_obj.breed,
+                    pet_age=pet_obj.age,
+                    tasks=pending_tasks
+                )
+            st.session_state.ai_plan = plan
+
+    # Always show the plan if it exists
+    if st.session_state.ai_plan:
+        st.success("✅ Care plan generated!")
+        st.markdown(st.session_state.ai_plan)
+else:
+    st.info("Add a pet first to generate an AI care plan!")
