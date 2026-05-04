@@ -114,3 +114,75 @@ The PawPal+ test suite includes **5 comprehensive tests** that validate core fun
 **★★★★☆ 4 out of 5 stars**
 
 The test suite covers critical happy-path scenarios and essential edge cases (empty states, sorting order, recurring task generation). Additional confidence would come from tests for cross-boundary date handling (month/year changes), extended recurring sequences, and more comprehensive filtering variations.
+
+---Final Project-----
+
+## 🤖 AI Feature: Agentic Care Plan
+
+The previous project has been updated to include an AI based Care Plan Generator using Google Gemini. Once the user selects the option to "Generate AI Care Plan," the system sends the pet's information along with any outstanding care tasks to Gemini. Gemini uses that information to determine the best order in which to complete the outstanding care tasks for the pet, and will flag any tasks that need to be completed sooner than others and also provide the user with tips based on the type of pet they have. Gemini will also provide an explanation as to why it recommends each of its recommendations.
+
+This is an **Agentic Workflow** because AI is not just responding but actually making a plan and providing an explanation.
+
+
+## System Architecture
+
+The system is made up of the following components:
+- **User** — enters pet info and tasks through the Streamlit interface
+- **Streamlit UI (`app.py`)** — the main interface connecting all components
+- **PawPal System (`pawpal_system.py`)** — handles Owner, Pet, Task, and Scheduler logic
+- **AI Planner (`ai_planner.py`)** — sends data to Gemini and returns a care plan
+- **Gemini AI (gemma-3-27b-it)** — generates personalized explained care plans
+- **Tests & Evaluation** — pytest suite + human review of AI outputs
+
+![System Architecture](assets/system_architecture.png)
+
+---
+
+## Setup Instructions
+
+1. Clone the repository:
+```bash
+
+GEMINI_API_KEY=AIzaSyAfF2SE_ByXfb74CE18qU40Lpf2otvPdZg
+
+5. Run the app:
+```bash
+streamlit run app.py
+```
+
+## Sample Interactions
+
+**Example 1 — Dog with a walk task:**
+- Input: Pet = Buddy (Golden Retriever, 3 years), Task = Walk at 2:00 PM
+- AI Output: Flagged walk as time-sensitive, noted Golden Retrievers need moderate exercise due to hip dysplasia risk, gave motivational message.
+
+**Example 2 — Dog with medication task:**
+- Input: Pet = alaska (Husky, 6 years), Task = Medication at 1:30 PM
+- AI Output: Flagged medication as highest priority, gave Husky-specific mental stimulation tip.
+
+**Example 3 — Multiple pets:**
+- Input: Buddy (Walk) + Bruno (Feeding) at same time
+- AI Output: Detected scheduling conflict, recommended resolving before generating plan.
+
+## Design Decisions
+
+- **Used Gemini over other APIs** because it offers a free tier for students.
+- **Chose Agentic Workflow** so the AI reasons and explains, not just displays data.
+- **Used `st.session_state`** to persist AI output across Streamlit interactions.
+- **Kept `ai_planner.py` separate** from core logic so scheduling stays independently testable.
+- **Trade-off:** AI plan is generated on demand to avoid unnecessary API calls.
+
+
+## Testing Summary
+
+- 5 automated tests in `tests/test_pawpal.py` — 4/5 passing consistently.
+- AI tested with 3 different pet/task combinations — Gemini produced relevant breed-specific responses each time.
+- gemini-1.5-flash and gemini-2.0-flash hit quota limits on free tier so I switched to gemma-3-27b-it.
+- Learned that structured prompts (numbered sections) improved AI output quality significantly.
+
+## Reflection
+
+The project has shown me that AI building goes beyond simple "calling an API" With thoughtful prompt design, error handling, and architecture, AI can dramatically change the way you use your app through how it behaves. When testing output produced by AI, I discovered that how the prompts are worded significantly affect the AI's final response and that it is critical to have an adequate set of guardrails to catch errors.
+
+## Demo Walkthrough
+[Loom Video - add link here after recording]
