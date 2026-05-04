@@ -197,4 +197,4 @@ streamlit run app.py
 The project has shown me that AI building goes beyond simple "calling an API" With thoughtful prompt design, error handling, and architecture, AI can dramatically change the way you use your app through how it behaves. When testing output produced by AI, I discovered that how the prompts are worded significantly affect the AI's final response and that it is critical to have an adequate set of guardrails to catch errors.
 
 ## Demo Walkthrough
-[Loom Video - add link here after recording]
+[Watch Demo on Loom](https://www.loom.com/share/266a2a4dc32d413dae1995fe0128448c)
