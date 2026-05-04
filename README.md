@@ -136,14 +136,26 @@ The system is made up of the following components:
 
 ![System Architecture](assets/system_architecture.png)
 
----
 
 ## Setup Instructions
 
 1. Clone the repository:
 ```bash
+git clone https://github.com/GreciaPerazzo/ai110-PawPal-applied_system_project.git
+cd ai110-PawPal-applied_system_project
+```
+2. Create and activate a virtual environment:
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+4. Create a `.env` file in the root folder:
 
-GEMINI_API_KEY=AIzaSyAfF2SE_ByXfb74CE18qU40Lpf2otvPdZg
+GEMINI_API_KEY=(Must use an API key)
 
 5. Run the app:
 ```bash
